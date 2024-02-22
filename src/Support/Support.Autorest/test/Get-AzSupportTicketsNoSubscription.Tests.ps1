@@ -15,12 +15,14 @@ if(($null -eq $TestName) -or ($TestName -contains 'Get-AzSupportTicketsNoSubscri
 }
 
 Describe 'Get-AzSupportTicketsNoSubscription' {
-    It 'List' -skip {
-        { throw [System.NotImplementedException] } | Should -Not -Throw
+    It 'List' {
+        $supportTickets = Get-AzSupportTicketsNoSubscription -Top 5
+        $supportTickets.Count | Should -BeGreaterThan 1
     }
 
-    It 'Get' -skip {
-        { throw [System.NotImplementedException] } | Should -Not -Throw
+    It 'Get' {
+        $supportTicket = Get-AzSupportTicketsNoSubscription -SupportTicketName $env.Name
+        $supportTicket.Description | Should -Be "test ticket - please ignore and close"
     }
 
     It 'GetViaIdentity' -skip {

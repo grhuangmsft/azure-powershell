@@ -79,6 +79,48 @@ directive:
           - FileSize
           - NumberOfChunks 
   - where:
+      model-name: SupportTicketDetails
+    set:
+      format-table:
+        properties:
+          - Name
+          - Title
+          - SupportTicketId
+          - Severity
+          - ServiceDisplayName
+          - CreatedDate
+  - where:
+      model-name: CommunicationDetails
+    set:
+      format-table:
+        properties:
+          - Name
+          - Sender
+          - Subject
+          - CreatedDate
+  - where:
+      model-name: ChatTranscriptDetails
+    set:
+      format-table:
+        properties:
+          - Name
+          - StartTime
+  - where:
+      subject: CommunicationsNoSubscription
+      parameter-name: CommunicationName
+    set:
+      alias: Name
+  - where:
+      subject: SupportTicketsNoSubscription
+      parameter-name: SupportTicketName
+    set:
+      alias: Name
+  - where:
+      subject: ChatTranscriptsNoSubscription
+      parameter-name: ChatTranscriptName
+    set:
+      alias: Name
+  - where:
       subject: UploadFile
       parameter-name: FileWorkspaceName
     set:
@@ -127,6 +169,45 @@ directive:
       verb: Invoke
       subject: UploadFilesNoSubscription
     hide: true
+  - where:
+      verb: Update
+      subject: Communication
+    remove: true
+  - where:
+      verb: Update
+      subject: CommunicationsNoSubscription
+    remove: true
+  - from: swagger-document
+    where: $.definitions.CommunicationDetails
+    transform: $.required = ['properties']
+  - from: swagger-document
+    where: $.definitions.SupportTicketDetails
+    transform: $.required = ['properties']
+  # only needed for 2022 preview version, should be able to remove for GA
+  - from: swagger-document
+    where: $.definitions.SupportTicketDetailsProperties
+    transform: $.required = ['serviceId','title','description','problemClassificationId','severity','contactDetails', 'advancedDiagnosticConsent']
+    
+  - from: swagger-document 
+    where: $.paths["/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts"].get.operationId
+    transform: >-
+      return "ChatTranscriptsNoSubscription_List"
+  - from: swagger-document 
+    where: $.paths["/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications"].get.operationId
+    transform: >-
+      return "CommunicationsNoSubscription_List"
+  - from: GetAzSupportTicket_List.cs
+    where: $
+    transform: $ = $.replace("!String.IsNullOrEmpty(_nextLink)" ,"!String.IsNullOrEmpty(_nextLink) && this._top <= 0");
+  - from: GetAzSupportTicketsNoSubscription_List.cs
+    where: $
+    transform: $ = $.replace("!String.IsNullOrEmpty(_nextLink)" ,"!String.IsNullOrEmpty(_nextLink) && this._top <= 0");
+  - from: GetAzSupportCommunication_List.cs
+    where: $
+    transform: $ = $.replace("!String.IsNullOrEmpty(_nextLink)" ,"!String.IsNullOrEmpty(_nextLink) && this._top <= 0");
+  - from: GetAzSupportCommunicationsNoSubscription_List.cs
+    where: $
+    transform: $ = $.replace("!String.IsNullOrEmpty(_nextLink)" ,"!String.IsNullOrEmpty(_nextLink) && this._top <= 0");
   # Following are common directives which are normally required in all the RPs
   # 1. Remove the unexpanded parameter set
   # 2. For New-* cmdlets, ViaIdentity is not required

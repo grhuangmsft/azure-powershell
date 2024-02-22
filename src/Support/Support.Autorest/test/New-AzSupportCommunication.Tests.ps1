@@ -15,7 +15,8 @@ if(($null -eq $TestName) -or ($TestName -contains 'New-AzSupportCommunication'))
 }
 
 Describe 'New-AzSupportCommunication' {
-    It 'CreateExpanded' -skip {
-        { throw [System.NotImplementedException] } | Should -Not -Throw
+    It 'CreateExpanded' {
+        $supportMessage = New-AzSupportCommunication -SubscriptionId $env.SubscriptionId -Name $env.communicationNameForCreate -SupportTicketName $env.Name -Body $env.Body -Sender $env.Sender -Subject $env.Subject
+        $supportMessage.Body.ToString() |  Should -Match $env.Body
     }
 }

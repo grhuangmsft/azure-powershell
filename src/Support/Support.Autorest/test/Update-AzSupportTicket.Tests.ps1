@@ -15,8 +15,10 @@ if(($null -eq $TestName) -or ($TestName -contains 'Update-AzSupportTicket'))
 }
 
 Describe 'Update-AzSupportTicket' {
-    It 'UpdateExpanded' -skip {
-        { throw [System.NotImplementedException] } | Should -Not -Throw
+
+    It 'UpdateExpanded' -skip:($env.HasSubscription -eq $false) {
+        $supportTicket = Update-AzSupportTicket -SubscriptionId $env.SubscriptionId -SupportTicketName $env.Name -AdvancedDiagnosticConsent "Yes"
+        $supportTicket.AdvancedDiagnosticConsent | Should -Be "Yes"
     }
 
     It 'UpdateViaIdentityExpanded' -skip {

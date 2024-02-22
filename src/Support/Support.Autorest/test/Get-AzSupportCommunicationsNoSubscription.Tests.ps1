@@ -15,8 +15,13 @@ if(($null -eq $TestName) -or ($TestName -contains 'Get-AzSupportCommunicationsNo
 }
 
 Describe 'Get-AzSupportCommunicationsNoSubscription' {
-    It 'Get' -skip {
-        { throw [System.NotImplementedException] } | Should -Not -Throw
+    It 'List' {
+        $supportMessages = Get-AzSupportCommunicationsNoSubscription -SupportTicketName $env.Name 
+        $supportMessages.Count | Should -BeGreaterThan 0
+    }
+    It 'Get' {
+        $supportMessage = Get-AzSupportCommunicationsNoSubscription -CommunicationName $env.CommunicationName -SupportTicketName $env.Name
+        $supportMessage.Body.ToString() |  Should -Match $env.Body
     }
 
     It 'GetViaIdentitySupportTicket' -skip {
