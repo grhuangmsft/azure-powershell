@@ -12,29 +12,38 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.Support.Cmdlets
     {
         public static void WriteError(this Cmdlet cmdlet, HttpResponseMessage responseMessage, Task<IErrorResponse> errorResponseTask, ref Task<bool> returnNow)
         {
-            var errorResponse = errorResponseTask?.ConfigureAwait(false).GetAwaiter().GetResult();
+            var errorDetailsString = responseMessage.Content.ReadAsStringAsync().Result;
 
-            if (errorResponse?.Detail != null && errorResponse?.Detail.Count > 0)
+            cmdlet.WriteError(new ErrorRecord(new System.Exception(), null, ErrorCategory.InvalidOperation, null)
             {
-                var errorDetails = errorResponse.Detail;
-                var errorDetailsString = "";
+                ErrorDetails = new ErrorDetails(errorDetailsString) { RecommendedAction = string.Empty }
+            });
 
-                foreach (var errorDetail in errorDetails)
-                {
-                    errorDetailsString += errorDetail.Message + " ";
-                }
+            returnNow = Task.FromResult(true);
+            //var errorResponse = errorResponseTask?.ConfigureAwait(false).GetAwaiter().GetResult();
 
-                cmdlet.WriteError(new ErrorRecord(new System.Exception(), null, ErrorCategory.InvalidOperation, null)
-                {
-                    ErrorDetails = new ErrorDetails(errorDetailsString) { RecommendedAction = string.Empty }
-                });
+            //if (errorResponse?.Detail != null && errorResponse?.Detail.Count > 0)
+            //{
+            //    //var errorDetails = errorResponse.Detail;
+            //    //var errorDetailsString = "";
 
-                returnNow = Task.FromResult(true);
-            }
-            else
-            {
-                returnNow = Task.FromResult(false);
-            }
+            //    //foreach (var errorDetail in errorDetails)
+            //    //{
+            //    //    errorDetailsString += errorDetail.Message + " ";
+            //    //}
+            //    var errorDetailsString = responseMessage.Content.ReadAsStringAsync().Result;
+
+            //    cmdlet.WriteError(new ErrorRecord(new System.Exception(), null, ErrorCategory.InvalidOperation, null)
+            //    {
+            //        ErrorDetails = new ErrorDetails(errorDetailsString) { RecommendedAction = string.Empty }
+            //    });
+
+            //    returnNow = Task.FromResult(true);
+            //}
+            //else
+            //{
+            //    returnNow = Task.FromResult(false);
+            //}
         }
     }
 }
