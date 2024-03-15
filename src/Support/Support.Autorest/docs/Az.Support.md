@@ -50,7 +50,7 @@ Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 
 ### [Get-AzSupportTicketsNoSubscription](Get-AzSupportTicketsNoSubscription.md)
-Get ticket details for a specific support ticket.
+Get details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 
