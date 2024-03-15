@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-AzSupportTicketsNoSubscription
 
 ## SYNOPSIS
-Gets details for a specific support ticket.
+Get ticket details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 
@@ -33,7 +33,7 @@ Get-AzSupportTicketsNoSubscription -InputObject <ISupportIdentity> [-DefaultProf
 ```
 
 ## DESCRIPTION
-Gets details for a specific support ticket.
+Get ticket details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 

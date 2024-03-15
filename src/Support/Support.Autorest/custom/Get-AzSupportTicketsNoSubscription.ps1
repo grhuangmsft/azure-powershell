@@ -16,11 +16,11 @@
 
 <#
 .Synopsis
-Get ticket details for an Azure subscription.
+Get ticket details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 .Description
-Get ticket details for an Azure subscription.
+Get ticket details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 .Example
@@ -29,28 +29,20 @@ If a ticket was created more than 18 months ago, a request for data might cause 
 {{ Add code here }}
 
 .Outputs
-Microsoft.Azure.PowerShell.Cmdlets.Support.Models.ISupportTicketDetails
+Microsoft.Azure.PowerShell.Cmdlets.Support.Models.IFileDetails
 .Link
-https://learn.microsoft.com/powershell/module/az.support/get-azsupportticket
+https://learn.microsoft.com/powershell/module/az.support/get-azsupportticketsnosubscription
 #>
-function Get-AzSupportTicket {
+function Get-AzSupportTicketsNoSubscription {
 [OutputType([Microsoft.Azure.PowerShell.Cmdlets.Support.Models.ISupportTicketDetails])]
 [CmdletBinding(DefaultParameterSetName='List', PositionalBinding=$false)]
 param(
     [Parameter(ParameterSetName='Get', Mandatory)]
-    [Alias('SupportTicketName')]
+    [Alias('Name')]
     [Microsoft.Azure.PowerShell.Cmdlets.Support.Category('Path')]
     [System.String]
     # Support ticket name.
-    ${Name},
-
-    [Parameter(ParameterSetName='Get')]
-    [Parameter(ParameterSetName='List')]
-    [Microsoft.Azure.PowerShell.Cmdlets.Support.Category('Path')]
-    [Microsoft.Azure.PowerShell.Cmdlets.Support.Runtime.DefaultInfo(Script='(Get-AzContext).Subscription.Id')]
-    [System.String[]]
-    # Azure subscription Id.
-    ${SubscriptionId},
+    ${SupportTicketName},
 
     [Parameter(ParameterSetName='GetViaIdentity', Mandatory, ValueFromPipeline)]
     [Microsoft.Azure.PowerShell.Cmdlets.Support.Category('Path')]
@@ -64,9 +56,8 @@ param(
     [System.String]
     # The filter to apply on the operation.
     # We support 'odata v4.0' filter semantics.
-    # [Learn more](https://docs.microsoft.com/odata/concepts/queryoptions-overview).
-    # _Status_, _ServiceId_, and _ProblemClassificationId_ filters can only be used with Equals ('eq') operator.
-    # For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and Greater Than or Equals ('ge').
+    # <a target='_blank' href='https://docs.microsoft.com/odata/concepts/queryoptions-overview'>Learn more</a> <br/><i>Status</i> , <i>ServiceId</i>, and <i>ProblemClassificationId</i> filters can only be used with 'eq' operator.
+    # For <i>CreatedDate</i> filter, the supported operators are 'gt' and 'ge'.
     # When using both filters, combine them using the logical 'AND'.
     ${Filter},
 
@@ -132,6 +123,6 @@ process {
         $Filter = "CreatedDate ge $($OneWeekAgo)"
         $PSBoundParameters.Add('Filter', $Filter)
     }
-    Az.Support.internal\Get-AzSupportTicket @PSBoundParameters
+    Az.Support.internal\Get-AzSupportTicketsNoSubscription @PSBoundParameters
 }
 }
