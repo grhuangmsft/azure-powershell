@@ -19,10 +19,12 @@
 Gets details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
+If no parameters are specified, then this command will retrieve all tickets created in the last week by default.
 .Description
 Gets details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
+If no parameters are specified, then this command will retrieve all tickets created in the last week by default.
 .Example
 {{ Add code here }}
 .Example
