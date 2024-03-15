@@ -16,11 +16,11 @@
 
 <#
 .Synopsis
-Get details for a specific support ticket.
+Gets details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 .Description
-Get details for a specific support ticket.
+Gets details for a specific support ticket.
 Support ticket data is available for 18 months after ticket creation.
 If a ticket was created more than 18 months ago, a request for data might cause an error.
 .Example
